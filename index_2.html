@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vectorIA - Soluciones con Inteligencia Artificial</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(45deg, #6A0DAD, #FF00FF);
+            --primary-color-start: #6A0DAD;
+            --primary-color-end: #710079;
+            --text-color-dark: #364152;
+            --text-color-light: #ffffff;
+            --bg-light: #f9f9f9;
+            --bg-white: #ffffff;
+            --border-color: #e0e0e0;
+            --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --transition-speed: 0.3s ease;
+            --fade-duration: 1s; /* Duración extendida para animaciones */
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            background: var(--bg-white);
+            color: var(--text-color-dark);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        section {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        section:nth-of-type(even) {
+            background-color: var(--bg-light);
+        }
+
+        h1 {
+            font-size: 4em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 1.5px;
+            position: relative;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: var(--primary-color-start);
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -10px;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
+        }
+
+        p {
+            line-height: 1.7;
+            margin-bottom: 1em;
+            font-size: 1em;
+            position: relative;
+        }
+
+        /* --- Navigation Bar --- */
+        .navbar {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background: var(--bg-white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            transition: background var(--transition-speed);
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .navbar .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .logo {
+            height: 35px;
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .navbar .company-name {
+            font-size: 1.6em;
+            font-weight: 700;
+            color: var(--primary-color-start);
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .navbar .nav-links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .navbar .nav-links li {
+            margin-left: 25px;
+            opacity: 0;
+            transform: translateY(-30px);
+            transition: opacity var(--fade-duration) ease-out, transform var(--fade-duration) ease-out;
+        }
+
+        .navbar .nav-links li.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .navbar .nav-links a {
+            text-decoration: none;
+            color: var(--text-color-dark);
+            font-weight: 500;
+            font-size: 1em;
+            transition: color var(--transition-speed), transform var(--transition-speed);
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        .navbar .nav-links a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-gradient);
+            transition: width var(--transition-speed);
+        }
+
+        .navbar .nav-links a:hover {
+            color: var(--primary-color-end);
+            transform: scale(1.05);
+        }
+
+        .navbar .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* --- Hero Section (Inicio) --- */
+        #inicio {
+            position: relative;
+            background: url('https://imgur.com/fd5oI6x.png') center/cover no-repeat;
+            color: var(--primary-color-start);
+            padding: 60px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 70vh;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        #inicio::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            z-index: 0;
+        }
+
+        #inicio h1,
+        #inicio p {
+            z-index: 1;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity var(--fade-duration) ease-out, transform var(--fade-duration) ease-out;
+        }
+
+        #inicio h1.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #inicio p.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.3s;
+        }
+
+        /* --- General Button Style --- */
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: var(--primary-color-start);
+            color: var(--text-color-light);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1em;
+            transition: all var(--transition-speed);
+            box-shadow: var(--shadow-light);
+            border: none;
+            cursor: pointer;
+            z-index: 1;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity var(--fade-duration) ease-out, transform var(--fade-duration) ease-out;
+        }
+
+        .btn.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.5s;
+        }
+
+        .btn:hover {
+            background: var(--primary-color-end);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* --- Servicios Section --- */
+        #servicios h2 {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity var(--fade-duration) ease-out, transform var(--fade-duration) ease-out;
+        }
+
+        #servicios h2.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #servicios .service-card {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity var(--fade-duration) ease-out, transform var(--fade-duration) ease-out;
+        }
+
+        #servicios .service-card.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #servicios .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .service-card {
+            background-color: var(--bg-white);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: var(--shadow-light);
+            text-align: left;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: var(--primary-gradient);
+            opacity: 0;
+            transform: rotate(45deg);
+            transition: opacity 0.5s ease-out;
+        }
+
+        .service-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .service-card h3 {
+            font-size: 1.4em;
+            color: var(--primary-color-start);
+            margin-bottom: 12px;
+            font-weight: 600;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .service-card p {
+            font-size: 0.95em;
+            color: var(--text-color-dark);
+        }
+
+        /* --- Colaboración & Nosotros Sections --- */
+        #colaboracion h2,
+        #colaboracion p,
+        #nosotros h2,
+        #nosotros p {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity var(--fade-duration) ease-out, transform var(--fade-duration) ease-out;
+        }
+
+        #colaboracion h2.is-visible,
+        #colaboracion p.is-visible,
+        #nosotros h2.is-visible,
+        #nosotros p.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #colaboracion, #nosotros {
+            padding: 60px 0;
+        }
+
+        #colaboracion .container,
+        #nosotros .container {
+            max-width: 900px;
+        }
+
+        /* --- Preguntas Frecuentes Section (FAQ) --- */
+        #faq h2,
+        #faq p,
+        #faq .btn {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity var(--fade-duration) ease-out, transform var(--fade-duration) ease-out;
+        }
+
+        #faq h2.is-visible,
+        #faq p.is-visible,
+        #faq .btn.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #faq {
+            background: var(--bg-white);
+            color: var(--primary-color-start);
+            padding: 60px 0;
+        }
+
+        #faq h2 {
+            color: var(--primary-color-start);
+        }
+
+        #faq h2::after {
+            background: var(--primary-color-start);
+        }
+
+        #faq .faq-content {
+            margin-top: 30px;
+        }
+
+        #faq .chatbot-link {
+            font-size: 1.1em;
+            margin-bottom: 25px;
+        }
+
+        #faq .chatbot-link a {
+            color: var(--primary-color-start);
+            font-weight: 600;
+            text-decoration: underline;
+            transition: color var(--transition-speed);
+        }
+
+        #faq .chatbot-link a:hover {
+            color: var(--primary-color-end);
+        }
+
+        /* --- Back to Top Button --- */
+        #backToTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary-color-start);
+            color: var(--text-color-light);
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 1.5em;
+            text-align: center;
+            line-height: 45px;
+            cursor: pointer;
+            box-shadow: var(--shadow-light);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+            z-index: 1001;
+        }
+
+        #backToTop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: #222;
+            color: #ccc;
+            padding: 30px 0;
+            font-size: 0.9em;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .navbar .nav-links {
+                display: none;
+            }
+            .navbar .container {
+                justify-content: center;
+            }
+            #inicio h1 {
+                font-size: 3.2em;
+            }
+            #inicio p {
+                font-size: 1.2em;
+            }
+            h2 {
+                font-size: 2em;
+            }
+            section {
+                padding: 50px 0;
+            }
+            .service-card {
+                padding: 20px;
+            }
+            .service-card h3 {
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #inicio h1 {
+                font-size: 2.5em;
+            }
+            #inicio p {
+                font-size: 1em;
+            }
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.95em;
+            }
+            .service-card {
+                padding: 15px;
+            }
+            .service-card h3 {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo-container animate-on-scroll">
+                <img src="https://imgur.com/2NsSMao.png" alt="vectorIA Logo" class="logo">
+            </div>
+            <ul class="nav-links">
+                <li class="animate-on-scroll"><a href="#inicio">Inicio</a></li>
+                <li class="animate-on-scroll"><a href="#servicios">Servicios</a></li>
+                <li class="animate-on-scroll"><a href="#colaboracion">Colaboración</a></li>
+                <li class="animate-on-scroll"><a href="#nosotros">Nosotros</a></li>
+                <li class="animate-on-scroll"><a href="#faq">Preguntas Frecuentes</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="inicio">
+        <div class="container">
+            <h1 class="animate-on-scroll">Potenciando Tu Futuro con IA</h1>
+            <p class="animate-on-scroll">Soluciones innovadoras en Inteligencia Artificial, Ciencia de Datos y Automatización para transformar su negocio.</p>
+        </div>
+    </section>
+
+    <section id="servicios">
+        <div class="container">
+            <h2 class="animate-on-scroll">Nuestros Servicios</h2>
+            <div class="services-grid">
+                <div class="service-card animate-on-scroll">
+                    <h3>Soluciones con Inteligencia Artificial y Automatización Avanzada</h3>
+                    <p>Diseñamos y desarrollamos sistemas inteligentes para transformar sus operaciones y potenciar la toma de decisiones. Algunos servicios específicos incluyen el desarrollo de chatbots inteligentes y agentes autónomos con IA.</p>
+                </div>
+                <div class="service-card animate-on-scroll">
+                    <h3>Business Intelligence y Ciencia de Datos</h3>
+                    <p>Convertimos datos crudos en conocimiento accionable mediante análisis profundo, modelización estadística y visualización efectiva de la información. Ofrecemos la implementación de Business Intelligence (BI) y dashboards.</p>
+                </div>
+                <div class="service-card animate-on-scroll">
+                    <h3>Optimización y Automatización en Google Workspace</h3>
+                    <p>Maximizamos la productividad de su equipo dentro del ecosistema de Google Workspace, personalizando y automatizando herramientas como Sheets, Docs y Gmail.</p>
+                </div>
+                <div class="service-card animate-on-scroll">
+                    <h3>Desarrollo de Soluciones Web y Herramientas Digitales Específicas</h3>
+                    <p>Creamos aplicaciones web ligeras y herramientas digitales a medida para resolver problemas operativos concretos y digitalizar procesos clave.</p>
+                </div>
+                <div class="service-card animate-on-scroll">
+                    <h3>Asesoría Estratégica en Datos e IA</h3>
+                    <p>Le acompañamos en la definición de su hoja de ruta estratégica en el ámbito de los datos y la Inteligencia Artificial, ayudándole a identificar oportunidades de alto impacto y a tomar decisiones informadas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="colaboracion">
+        <div class="container">
+            <h2 class="animate-on-scroll">Colaboración</h2>
+            <p class="animate-on-scroll">En vectorIA, creemos en el poder de la sinergia. Colaboramos estrechamente con nuestros clientes, entendiendo sus desafíos únicos y co-creando soluciones que no solo resuelven problemas, sino que también abren nuevas oportunidades de crecimiento. Nuestro enfoque centrado en el cliente asegura que cada proyecto sea un éxito compartido, construyendo relaciones duraderas basadas en la confianza y la innovación.</p>
+        </div>
+    </section>
+
+    <section id="nosotros">
+        <div class="container">
+            <h2 class="animate-on-scroll">Nosotros</h2>
+            <p class="animate-on-scroll">Somos un equipo apasionado de ingenieros de IA, científicos de datos y desarrolladores web con una visión común: democratizar el acceso a la tecnología avanzada. En vectorIA, combinamos experiencia técnica profunda con una comprensión clara de las necesidades del negocio para ofrecer resultados tangibles y medibles. Nuestra misión es empoderar a las empresas para que aprovechen al máximo el potencial de la Inteligencia Artificial y la automatización.</p>
+        </div>
+    </section>
+
+    <section id="faq">
+        <div class="container">
+            <h2 class="animate-on-scroll">Preguntas Frecuentes</h2>
+            <div class="faq-content">
+                <p class="chatbot-link animate-on-scroll">¡Prueba tú mismo la calidad de nuestros servicios! Utiliza a Funes para resolver tus dudas y agendar una sesión con nosotros. Este es el link al chatbot:</p>
+                <a href="https://chatbot-vectoria.vercel.app/" target="_blank" class="btn animate-on-scroll">Acceder a Funes Chatbot</a>
+            </div>
+        </div>
+    </section>
+
+    <button id="backToTop" title="Volver arriba">↑</button>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 vectorIA. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Función para detectar elementos en vista y agregar la clase 'is-visible'
+        const animateOnScroll = () => {
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) {
+                    el.classList.add('is-visible');
+                }
+            });
+        };
+
+        // Inicializar en carga y en scroll
+        document.addEventListener('DOMContentLoaded', animateOnScroll);
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('resize', animateOnScroll);
+
+        // Animar enlaces del menú con delay
+        window.addEventListener('load', () => {
+            const navItems = document.querySelectorAll('.navbar .nav-links li');
+            navItems.forEach((li, index) => {
+                setTimeout(() => {
+                    li.classList.add('is-visible');
+                }, index * 200 + 400);
+            });
+        });
+
+        // Botón “Back to Top”
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
